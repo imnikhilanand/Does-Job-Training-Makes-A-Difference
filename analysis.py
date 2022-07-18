@@ -12,8 +12,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from causalgraphicalmodels import CausalGraphicalModel
+import statsmodels.api as sm 
 # importing dataset
 data = pd.read_csv('lalonde.csv')
+# deleting irrelevant columns
+del data['Unnamed: 0']
 
 
 """ Analysis """
@@ -64,5 +67,141 @@ re78.draw()
 
 
 data.columns
+
+
+
+""" 
+        Let's check if the variables are confounders or not 
+        
+        REGRESSION ANALYSIS    
+
+"""
+
+# Building the OLS on simple 
+X = data[['treat']]
+y = data[['re78']]
+
+X = sm.add_constant(X)
+mod = sm.OLS(y, X)
+res = mod.fit()
+res.summary()
+
+# treat -> -635.0262 
+
+# checking if age is potenitial confounder or not
+X = data[['treat','age']]
+y = data[['re78']]
+
+X = sm.add_constant(X)
+mod = sm.OLS(y, X)
+res = mod.fit()
+res.summary()
+
+# treat -> -462.0603 
+
+# checking if education is potential confounder or not
+X = data[['treat','educ']]
+y = data[['re78']]
+
+X = sm.add_constant(X)
+mod = sm.OLS(y, X)
+res = mod.fit()
+res.summary()
+
+# treat -> -686.0253
+
+# checking if education is potential confounder or not
+X = data[['treat','married']]
+y = data[['re78']]
+
+X = sm.add_constant(X)
+mod = sm.OLS(y, X)
+res = mod.fit()
+res.summary()
+
+# treat -> 176.9906
+
+# checking if education is potential confounder or not
+X = data[['treat','nodegree']]
+y = data[['re78']]
+
+X = sm.add_constant(X)
+mod = sm.OLS(y, X)
+res = mod.fit()
+res.summary()
+
+# treat -> -394.1711
+
+
+# checking if being black potential confounder or not
+X = data[['treat','black']]
+y = data[['re78']]
+
+X = sm.add_constant(X)
+mod = sm.OLS(y, X)
+res = mod.fit()
+res.summary()
+
+# treat -> 857.1835
+
+# checking if being hispanic potential confounder or not
+X = data[['treat','hispan']]
+y = data[['re78']]
+
+X = sm.add_constant(X)
+mod = sm.OLS(y, X)
+res = mod.fit()
+res.summary()
+
+# treat -> -614.1596
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
