@@ -20,11 +20,12 @@ del data['Unnamed: 0']
 
 
 """ Analysis """
-without_training = data.query('treat==0')
-with_training = data.query('treat==1')
 
-sns.distplot(without_training, bins=20, kde=False, color="Blue", axlabel="re78")
-sns.distplot(with_training, bins=20, kde=False, color="Red", axlabel="re78")
+control = data.query('treat==0')
+treatment = data.query('treat==1')
+
+sns.distplot(control, bins=20, kde=False, color="Blue", axlabel="re78")
+sns.distplot(treatment, bins=20, kde=False, color="Red", axlabel="re78")
 
 # from the graph, it seems that there the average salary without trainging is higher than average salary after training
 
@@ -71,99 +72,9 @@ data.columns
 
 
 """ 
-        Let's check if the variables are confounders or not 
-        
-        REGRESSION ANALYSIS    
+        CAUSAL EFFECT
 
 """
-
-# Building the OLS on simple 
-X = data[['treat']]
-y = data[['re78']]
-
-X = sm.add_constant(X)
-mod = sm.OLS(y, X)
-res = mod.fit()
-res.summary()
-
-# treat -> -635.0262 
-
-# checking if age is potenitial confounder or not
-X = data[['treat','age']]
-y = data[['re78']]
-
-X = sm.add_constant(X)
-mod = sm.OLS(y, X)
-res = mod.fit()
-res.summary()
-
-# treat -> -462.0603 
-
-# checking if education is potential confounder or not
-X = data[['treat','educ']]
-y = data[['re78']]
-
-X = sm.add_constant(X)
-mod = sm.OLS(y, X)
-res = mod.fit()
-res.summary()
-
-# treat -> -686.0253
-
-# checking if education is potential confounder or not
-X = data[['treat','married']]
-y = data[['re78']]
-
-X = sm.add_constant(X)
-mod = sm.OLS(y, X)
-res = mod.fit()
-res.summary()
-
-# treat -> 176.9906
-
-# checking if education is potential confounder or not
-X = data[['treat','nodegree']]
-y = data[['re78']]
-
-X = sm.add_constant(X)
-mod = sm.OLS(y, X)
-res = mod.fit()
-res.summary()
-
-# treat -> -394.1711
-
-
-# checking if being black potential confounder or not
-X = data[['treat','black']]
-y = data[['re78']]
-
-X = sm.add_constant(X)
-mod = sm.OLS(y, X)
-res = mod.fit()
-res.summary()
-
-# treat -> 857.1835
-
-# checking if being hispanic potential confounder or not
-X = data[['treat','hispan']]
-y = data[['re78']]
-
-X = sm.add_constant(X)
-mod = sm.OLS(y, X)
-res = mod.fit()
-res.summary()
-
-# treat -> -614.1596
-
-
-
-
-
-
-
-
-
-
 
 
 
